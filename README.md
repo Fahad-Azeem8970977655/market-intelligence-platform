@@ -1,204 +1,185 @@
 # 📡 Real-Time Market Research & Competitive Intelligence Platform
 
-A full-stack AI-powered platform for market monitoring, sentiment analysis, competitor tracking, and strategic insights generation.
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
+![Flask](https://img.shields.io/badge/Flask-3.0-black?logo=flask)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.35-red?logo=streamlit)
+![HuggingFace](https://img.shields.io/badge/HuggingFace-Transformers-yellow?logo=huggingface)
+![MongoDB](https://img.shields.io/badge/MongoDB-7.0-green?logo=mongodb)
+![License](https://img.shields.io/badge/License-MIT-purple)
+
+A full-stack, production-grade AI platform for automated news monitoring,
+multi-engine NLP sentiment analysis, competitor tracking, keyword trend
+detection, and LangChain-powered strategic insight generation — all wrapped
+in an interactive Streamlit dashboard.
+
+---
+
+## 🖥️ Demo Screenshots
+
+> Add screenshots here after running the app
+> `![Dashboard](screenshots/dashboard.png)`
 
 ---
 
 ## 🏗️ Architecture
+┌─────────────────────────────────────────────────┐
+│              FRONTEND  (Streamlit)               │
+│  Dashboard │ News │ Sentiment │ Competitors │ AI │
+└─────────────────────┬───────────────────────────┘
+│  REST API
+┌─────────────────────▼───────────────────────────┐
+│              BACKEND  (Flask)                    │
+│  /news  │  /sentiment  │  /competitors           │
+│  /trends │  /insights  │  /health                │
+└──────┬──────────────┬─────────────┬─────────────┘
+│              │             │
+┌──────▼─────┐ ┌──────▼────┐ ┌────▼──────────┐
+│ NLP Engine │ │  Data      │ │  Databases    │
+│ · VADER    │ │  Collector │ │  · MongoDB    │
+│ · TextBlob │ │  · NewsAPI │ │  · PostgreSQL │
+│ · HuggingF │ │  · RSS     │ │  · Redis      │
+│ · LangChain│ │  · Scraper │ └───────────────┘
+└────────────┘ └───────────┘
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    FRONTEND (Streamlit)                  │
-│  Dashboard │ News Feed │ Sentiment │ Competitors │ AI   │
-└──────────────────────┬──────────────────────────────────┘
-                       │  HTTP REST
-┌──────────────────────▼──────────────────────────────────┐
-│               BACKEND (Flask REST API)                   │
-│  /api/news  │  /api/sentiment  │  /api/competitors       │
-│  /api/trends │  /api/insights  │  /api/health            │
-└──────┬───────────────┬─────────────────┬────────────────┘
-       │               │                 │
-┌──────▼──────┐ ┌──────▼──────┐ ┌───────▼───────┐
-│  NLP Engine │ │Data Collector│ │   Databases   │
-│  · VADER    │ │  · NewsAPI  │ │  · MongoDB    │
-│  · TextBlob │ │  · RSS feeds│ │  · PostgreSQL │
-│  · HuggingF │ │  · Scraper  │ │  · Redis      │
-│  · LangChain│ └─────────────┘ └───────────────┘
-└─────────────┘
-```
+---
+
+## ✨ Features
+
+| Module | What it does |
+|---|---|
+| 📰 **News Feed** | Fetches & analyses articles from NewsAPI, RSS, web scraping |
+| 🎭 **Sentiment Engine** | Ensemble of VADER + TextBlob + HuggingFace Transformers |
+| 🎯 **Competitor Intel** | Market share tracking, employee metrics, competitor news monitoring |
+| 📈 **Trend Analysis** | Keyword frequency, sentiment-over-time, score distribution |
+| ⚡ **AI Insights** | LangChain + HuggingFace strategic insight & summarization |
+| 🗃️ **Dual Database** | MongoDB (articles) + PostgreSQL (structured) + Redis (cache) |
 
 ---
 
 ## 🚀 Quick Start
 
-### Option A — One-command start (recommended)
-
-**Linux / macOS:**
+### 1. Clone the repository
 ```bash
-chmod +x start.sh
-./start.sh
+git clone https://github.com/YOUR_USERNAME/market-intelligence-platform.git
+cd market-intelligence-platform
 ```
 
-**Windows:**
-```bat
-start.bat
-```
-
-### Option B — Manual setup
-
+### 2. Create virtual environment
 ```bash
-# 1. Clone / extract the project
-cd market_intel
-
-# 2. Create & activate virtual environment
 python -m venv venv
-source venv/bin/activate          # Linux/Mac
-venv\Scripts\activate.bat         # Windows
 
-# 3. Install dependencies
+# Linux/Mac
+source venv/bin/activate
+
+# Windows
+venv\Scripts\activate
+```
+
+### 3. Install dependencies
+```bash
 pip install -r requirements.txt
+```
 
-# 4. Configure environment
+### 4. Configure environment
+```bash
 cp .env.example .env
-# Edit .env with your API keys (see below)
+# Open .env and add your API keys
+```
 
-# 5. Start Flask API  (Terminal 1)
+### 5. Run the platform
+
+**Terminal 1 — Flask API:**
+```bash
 python backend/app.py
+```
 
-# 6. Start Streamlit  (Terminal 2)
+**Terminal 2 — Streamlit Dashboard:**
+```bash
 streamlit run frontend/streamlit_app.py
 ```
 
-### Option C — Docker Compose
+Open → **http://localhost:8501**
+
+---
+
+## 🐳 Docker (One Command)
 
 ```bash
 docker-compose up --build
 ```
 
-Access:
-- **Dashboard** → http://localhost:8501
-- **API**        → http://localhost:5000/api/health
-
----
-
-## 🔑 API Keys (Optional but recommended)
-
-Edit `.env`:
-
-| Variable | Where to get it | Required? |
-|---|---|---|
-| `NEWS_API_KEY` | https://newsapi.org (free tier: 100 req/day) | Optional* |
-| `HUGGINGFACE_API_KEY` | https://huggingface.co/settings/tokens | Optional* |
-| `MONGO_URI` | Local MongoDB or MongoDB Atlas | Optional* |
-
-> \* The platform works out-of-the-box with **mock data** if no API keys are configured.
-
----
-
-## 📦 Tech Stack
-
-| Layer | Technology |
+| Service | URL |
 |---|---|
-| **Frontend** | Streamlit, Streamlit-Option-Menu |
-| **Backend** | Python 3.11, Flask, Flask-CORS |
-| **AI / NLP** | HuggingFace Transformers, TextBlob, VaderSentiment, LangChain |
-| **Database** | MongoDB (primary), PostgreSQL (optional) |
-| **Cache** | Redis (optional) |
-| **Visualization** | Plotly |
-| **Scraping** | BeautifulSoup4, feedparser, requests |
+| Dashboard | http://localhost:8501 |
+| Flask API | http://localhost:5000/api/health |
 
 ---
 
-## 📊 Features
+## 🔑 API Keys
 
-### Dashboard
-- Real-time KPIs: total articles, positive/negative signals, positive rate
-- Sentiment distribution pie chart
-- Articles by source bar chart
-- Recent article feed with sentiment badges
+| Variable | Source | Required? |
+|---|---|---|
+| `NEWS_API_KEY` | newsapi.org (free) | Optional* |
+| `HUGGINGFACE_API_KEY` | huggingface.co (free) | Optional* |
+| `MONGO_URI` | Local or Atlas (free) | Optional* |
 
-### News Feed
-- Search by keyword across NewsAPI, RSS feeds, or mock data
-- Multi-engine NLP: VADER, TextBlob, HuggingFace, or Ensemble
-- Per-article sentiment score, keywords extraction
-- Save all results to MongoDB automatically
-
-### Sentiment Analyser
-- Paste any text for instant analysis
-- Animated gauge (-1 to +1)
-- Keyword extraction
-- Engine-specific detailed breakdown
-
-### Competitor Intelligence
-- Market share pie chart
-- Employee vs market share scatter plot
-- Competitor directory table
-- Per-competitor news monitoring with sentiment
-- Add new competitors via UI
-
-### Market Trends
-- Top keyword frequency bar chart
-- Sentiment over time area chart
-- Sentiment score histogram
-
-### AI Insights
-- LangChain + HuggingFace strategic insight generation
-- Extractive fallback when models unavailable
-- Custom text summarisation
+> *Platform works with built-in mock data if no keys are configured.
 
 ---
 
-## 🛠️ API Reference
-
-```
-GET  /api/health                     Health check
-POST /api/news/fetch                 Fetch & analyse articles
-GET  /api/news/articles              List stored articles
-POST /api/sentiment/analyse          Analyse text sentiment
-GET  /api/sentiment/stats            Sentiment statistics
-GET  /api/competitors                List competitors
-POST /api/competitors/add            Add competitor
-GET  /api/competitors/{name}/news    Competitor news
-GET  /api/insights                   AI market insights
-GET  /api/trends                     Keyword trends
-POST /api/summarise                  Summarise text
-```
-
----
-
-## 🗂️ Project Structure
-
-```
-market_intel/
+## 📁 Project Structure
+market-intelligence-platform/
 ├── backend/
-│   ├── app.py              Flask REST API
-│   ├── nlp_engine.py       VADER + TextBlob + HF + LangChain
-│   └── data_collector.py   NewsAPI + RSS + Scraper
+│   ├── app.py                 # Flask REST API
+│   ├── nlp_engine.py          # VADER + TextBlob + HuggingFace + LangChain
+│   └── data_collector.py      # NewsAPI + RSS + scraper
 ├── database/
-│   └── db.py               MongoDB + PostgreSQL helpers
+│   └── db.py                  # MongoDB + PostgreSQL
 ├── frontend/
-│   └── streamlit_app.py    Streamlit dashboard
+│   └── streamlit_app.py       # Streamlit dashboard
 ├── docker-compose.yml
 ├── Dockerfile.api
 ├── Dockerfile.ui
 ├── requirements.txt
 ├── .env.example
-├── start.sh                Linux/Mac launcher
-└── start.bat               Windows launcher
-```
+└── README.md
 
 ---
 
-## ❓ Troubleshooting
+## 🛠️ Tech Stack
 
-**API Offline in sidebar:**
-Make sure Flask is running: `python backend/app.py`
+| Layer | Technology |
+|---|---|
+| Frontend | Streamlit, Plotly |
+| Backend | Python 3.11, Flask, Flask-CORS |
+| AI / NLP | HuggingFace Transformers, LangChain, VaderSentiment, TextBlob |
+| Databases | MongoDB, PostgreSQL, Redis |
+| Scraping | BeautifulSoup4, feedparser, NewsAPI |
+| DevOps | Docker, Docker Compose |
 
-**MongoDB not connected:**
-Platform auto-falls back to mock data. Install MongoDB locally or use Atlas.
+---
 
-**HuggingFace model slow:**
-First run downloads models (~500MB). Use `vader` or `textblob` engine for instant results.
+## 📊 API Endpoints
+GET  /api/health                      Health check
+POST /api/news/fetch                  Fetch & analyse articles
+GET  /api/news/articles               List stored articles
+POST /api/sentiment/analyse           Analyse any text
+GET  /api/sentiment/stats             Sentiment statistics
+GET  /api/competitors                 Competitor list
+POST /api/competitors/add             Add competitor
+GET  /api/competitors/{name}/news     Competitor news feed
+GET  /api/insights                    AI market insights
+GET  /api/trends                      Keyword trends
+POST /api/summarise                   Summarise text
 
-**Port already in use:**
-Change `FLASK_PORT=5001` in `.env` and update `API_BASE_URL=http://localhost:5001/api`.
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes please open an issue first.
+
+---
+
+## 📄 License
+
+[MIT](LICENSE)
