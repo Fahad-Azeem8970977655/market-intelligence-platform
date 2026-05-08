@@ -1,0 +1,45 @@
+# Web Framework
+flask==3.0.3
+flask-cors==4.0.1
+flask-pymongo==2.3.0
+
+# Streamlit Frontend
+streamlit==1.35.0
+streamlit-option-menu==0.3.12
+
+# AI / NLP
+transformers==4.41.2
+torch==2.3.0
+textblob==0.18.0
+vaderSentiment==3.3.2
+langchain==0.2.3
+langchain-community==0.2.3
+langchain-huggingface==0.0.3
+sentence-transformers==3.0.0
+huggingface-hub==0.23.3
+
+# Database
+pymongo==4.7.2
+psycopg2-binary==2.9.9
+sqlalchemy==2.0.30
+motor==3.4.0
+
+# Data Processing
+pandas==2.2.2
+numpy==1.26.4
+requests==2.32.3
+beautifulsoup4==4.12.3
+feedparser==6.0.11
+newspaper3k==0.2.8
+
+# Visualization
+plotly==5.22.0
+matplotlib==3.9.0
+
+# Utilities
+python-dotenv==1.0.1
+pydantic==2.7.3
+schedule==1.2.2
+redis==5.0.5
+celery==5.4.0
+loguru==0.7.2

@@ -1,0 +1,69 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: market_intel_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: market_intelligence
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+    container_name: market_intel_postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB:       market_intel
+      POSTGRES_USER:     admin
+      POSTGRES_PASSWORD: password
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: market_intel_redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  flask_api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: market_intel_api
+    ports:
+      - "5000:5000"
+    environment:
+      MONGO_URI:    mongodb://mongodb:27017/
+      MONGO_DB:     market_intelligence
+      POSTGRES_URI: postgresql://admin:password@postgres:5432/market_intel
+      REDIS_URL:    redis://redis:6379/0
+      FLASK_ENV:    production
+    depends_on:
+      - mongodb
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    container_name: market_intel_ui
+    ports:
+      - "8501:8501"
+    environment:
+      API_BASE_URL: http://flask_api:5000/api
+    depends_on:
+      - flask_api
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
+  pg_data:
